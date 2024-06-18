@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import axios from "axios";
+import Quotes from "./components/Quotes";
 import "./App.css";
 
 class App extends Component {
@@ -13,16 +14,15 @@ class App extends Component {
     const { data } = await axios.get(
       `https://thesimpsonsquoteapi.glitch.me/quotes?count=50`
     );
-    this.setState({ simpsons: data });
+    this.setState({ quotes: data });
   };
 
   render() {
-    console.log(this.state.simpsons);
-    if (!this.state.simpsons) {
+    if (!this.state.quotes) {
       return <p>Loading...</p>;
     }
 
-    return null; //your work begins here!
+    return <Quotes quotes={this.state.quotes}/>
   }
 }
 

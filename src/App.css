@@ -1,8 +1,44 @@
-.weatherItem {
+.quoteItem {
   background-color: lightblue;
   margin: 20px;
+  display:flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+
 }
 
-.fav {
+.main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+button {
+  font-size: 2rem;
+  border:3px solid yellow;
+  background-color: transparent;
+  border-radius: 30px;
+  padding: 1em;
+}
+
+button:hover {
+background-color: yellow;
+}
+.liked {
   background-color: yellow;
+}
+.liked button {
+  border: 3px solid lightblue
+}
+.liked button:hover {
+  background-color: lightblue;
+}
+
+.right {
+  flex-direction: row-reverse;
+}
+
+img {
+  height: 150px;
 }
