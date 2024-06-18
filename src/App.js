@@ -1,33 +1,28 @@
 import React, { Component } from "react";
 import axios from "axios";
-import Weather from "./components/Weather";
 import "./App.css";
 
 class App extends Component {
   state = {};
 
   componentDidMount() {
-    this.getWeather();
-
-    setInterval(() => {
-      this.getWeather();
-    }, 60000);
+    this.getSimpsons();
   }
 
-  getWeather = async () => {
+  getSimpsons = async () => {
     const { data } = await axios.get(
-      `https://api.openweathermap.org/data/2.5/forecast?lat=1.22&lon=2.22&APPID=17a3e02a9cc47ed1eac90bc2f9c0012a`
+      `https://thesimpsonsquoteapi.glitch.me/quotes?count=50`
     );
-    this.setState({ weather: data });
-    console.log(data.list.length)
+    this.setState({ simpsons: data });
   };
 
   render() {
-    if (!this.state.weather) {
+    console.log(this.state.simpsons);
+    if (!this.state.simpsons) {
       return <p>Loading...</p>;
     }
 
-    return <Weather weather={this.state.weather} />;
+    return null; //your work begins here!
   }
 }
 
