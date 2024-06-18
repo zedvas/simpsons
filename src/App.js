@@ -1,27 +1,33 @@
 import React, { Component } from "react";
-import Child from "./components/Child";
+import axios from "axios";
+import Weather from "./components/Weather";
+import "./App.css";
 
 class App extends Component {
-  state = { isActive: false, count: 0 };
+  state = {};
 
-  onToggle = () => {
-    this.setState({ isActive: !this.state.isActive });
+  componentDidMount() {
+    this.getWeather();
+
+    setInterval(() => {
+      this.getWeather();
+    }, 60000);
+  }
+
+  getWeather = async () => {
+    const { data } = await axios.get(
+      `https://api.openweathermap.org/data/2.5/forecast?lat=1.22&lon=2.22&APPID=17a3e02a9cc47ed1eac90bc2f9c0012a`
+    );
+    this.setState({ weather: data });
+    console.log(data.list.length)
   };
 
   render() {
-    return (
-      <>
-        <button onClick={this.onToggle}>Toggle</button>
-        <button
-          onClick={() => {
-            this.setState({ count: this.state.count + 1 });
-          }}
-        >
-          Add 1 to count
-        </button>
-        {this.state.isActive && <Child count={this.state.count} />}
-      </>
-    );
+    if (!this.state.weather) {
+      return <p>Loading...</p>;
+    }
+
+    return <Weather weather={this.state.weather} />;
   }
 }
 
