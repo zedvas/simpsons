@@ -3,9 +3,11 @@ import axios from "axios";
 import CharacterQuotes from "./components/CharacterQuotes";
 import "./App.css";
 import TotalLikes from "./components/TotalLikes";
+import SearchInput from "./components/SearchInput";
+import SelectInput from "./components/SelectInput";
 
 class App extends Component {
-  state = {};
+  state = { inputValue: "" };
 
   componentDidMount() {
     this.getSimpsons();
@@ -24,25 +26,47 @@ class App extends Component {
   onLikeHandler = (id) => {
     let quotes = [...this.state.quotes];
     const likedIndex = quotes.findIndex((quote) => {
-     return id === quote.id
+      return id === quote.id;
     });
-    quotes[likedIndex].liked = !quotes[likedIndex].liked
-this.setState({quotes: quotes});
-this.getTotalLikes();
-  }
+    quotes[likedIndex].liked = !quotes[likedIndex].liked;
+    this.setState({ quotes: quotes });
+    this.getTotalLikes();
+  };
 
   onDeleteHandler = (id) => {
     let quotes = [...this.state.quotes];
-    quotes = quotes.filter(quote=> {
-      return quote.id !== id
-    })
-    this.setState({quotes: quotes})
-  }
+    const index = quotes.findIndex((quote) => {
+      return quote.id === id;
+    });
+    quotes.splice(index,1);
+    console.log(this.state.quotes)
+
+    this.setState({ quotes: quotes });
+    console.log(this.state.quotes)
+  };
 
   getTotalLikes = () => {
-    const filteredList = this.state.quotes.filter(quote=> {return quote.liked})
-    this.setState({totalLikes: filteredList.length})
-  }
+    const filteredList = this.state.quotes.filter((quote) => {
+      return quote.liked;
+    });
+    this.setState({ totalLikes: filteredList.length });
+  };
+
+  inputHandler = (e) => {
+    this.setState({ inputValue: e.target.value });
+    let quotes = [...this.state.quotes];
+    quotes = quotes.filter((quote) => {
+      console.log(this.state.inputValue, quote.character);
+      return quote.character
+        .toLowerCase()
+        .includes(this.state.inputValue.toLowerCase());
+    });
+    this.setState({ quotes: quotes });
+  };
+
+  selectHandler = (e) => {
+    console.log(e.target.value);
+  };
 
   render() {
     if (!this.state.quotes) {
@@ -51,12 +75,19 @@ this.getTotalLikes();
 
     return (
       <>
-      <TotalLikes totalLikes={this.state.totalLikes}/>
-      <CharacterQuotes
-        data={this.state.quotes}
-        onLikeHandler={this.onLikeHandler}
-        onDeleteHandler={this.onDeleteHandler}
-      />
+        <TotalLikes
+          totalLikes={this.state.totalLikes}
+        />
+        <SearchInput
+          inputHandler={this.inputHandler}
+          inputValue={this.state.inputValue}
+        />
+        <SelectInput selectHandler={this.selectHandler} />
+        <CharacterQuotes
+          data={this.state.quotes}
+          onLikeHandler={this.onLikeHandler}
+          onDeleteHandler={this.onDeleteHandler}
+        />
       </>
     );
   }
