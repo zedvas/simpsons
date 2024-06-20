@@ -1,10 +1,13 @@
-import React, { Component } from 'react';
-class SearchInput extends Component {
-    state = {  } 
-    render() {
-        console.log(this.props) 
-        return (<input type="text" onChange={(e)=>{this.props.inputHandler(e)}} value={this.props.inputValue}></input>);
-    }
+function SearchInput({inputHandler, inputValue}) {
+  return (
+    <input
+      type="text"
+      onChange={(e) => {
+        inputHandler(e);
+      }}
+      value={inputValue}
+    ></input>
+  );
 }
- 
+
 export default SearchInput;

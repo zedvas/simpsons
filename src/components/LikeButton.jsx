@@ -1,13 +1,9 @@
-import React, { Component } from 'react';
-
-class LikeButton
- extends Component {
-    render() {
-        return (
-            <button onClick={()=>this.props.onLikeHandler(this.props.id)}>{this.props.liked?"dislike":"like"}</button>
-        );
-    }
+function LikeButton({ liked, id, onLikeHandler }) {
+  return (
+    <button onClick={() => onLikeHandler(id)}>
+      {liked ? "dislike" : "like"}
+    </button>
+  );
 }
- 
-export default LikeButton
-;
+
+export default LikeButton;

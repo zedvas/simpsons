@@ -56,7 +56,6 @@ class App extends Component {
     this.setState({ inputValue: e.target.value });
     let quotes = [...this.state.quotes];
     quotes = quotes.filter((quote) => {
-      console.log(this.state.inputValue, quote.character);
       return quote.character
         .toLowerCase()
         .includes(this.state.inputValue.toLowerCase());
@@ -64,9 +63,9 @@ class App extends Component {
     this.setState({ quotes: quotes });
   };
 
-  selectHandler = (e) => {
-    console.log(e.target.value);
-  };
+  // selectHandler = (e) => {
+  //   console.log(e.target.value);
+  // };
 
   render() {
     if (!this.state.quotes) {
@@ -82,7 +81,7 @@ class App extends Component {
           inputHandler={this.inputHandler}
           inputValue={this.state.inputValue}
         />
-        <SelectInput selectHandler={this.selectHandler} />
+        {/* <SelectInput selectHandler={this.selectHandler} /> */}
         <CharacterQuotes
           data={this.state.quotes}
           onLikeHandler={this.onLikeHandler}
@@ -94,3 +93,4 @@ class App extends Component {
 }
 
 export default App;
+
