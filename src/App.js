@@ -30,7 +30,7 @@ class App extends Component {
     });
     quotes[likedIndex].liked = !quotes[likedIndex].liked;
     this.setState({ quotes: quotes });
-    this.getTotalLikes();
+    // this.getTotalLikes(); //satte is not yet updated
   };
 
   onDeleteHandler = (id) => {
@@ -39,29 +39,34 @@ class App extends Component {
       return quote.id === id;
     });
     quotes.splice(index,1);
-    console.log(this.state.quotes)
-
     this.setState({ quotes: quotes });
-    console.log(this.state.quotes)
   };
 
   getTotalLikes = () => {
     const filteredList = this.state.quotes.filter((quote) => {
       return quote.liked;
     });
-    this.setState({ totalLikes: filteredList.length });
-  };
+    return filteredList.length
+    // this.setState({ totalLikes: filteredList.length });
+  }; 
+  
+  //Not working because I'm creating a second piece of state here?
+  //chnage to return filteredList.length instead of setting state and then call func in render
 
   inputHandler = (e) => {
     this.setState({ inputValue: e.target.value });
-    let quotes = [...this.state.quotes];
-    quotes = quotes.filter((quote) => {
-      return quote.character
-        .toLowerCase()
-        .includes(this.state.inputValue.toLowerCase());
-    });
-    this.setState({ quotes: quotes });
+    // let quotes = [...this.state.quotes];
+    // quotes = quotes.filter((quote) => {
+    //   return quote.character
+    //     .toLowerCase()
+    //     .includes(this.state.inputValue.toLowerCase());
+    // });
+    // this.setState({ quotes: quotes });
   };
+  //Not working because creating unecessary state?
+  //Change to pass the results of this func to the render?
+  //But how would I send a variable which exists in a function? 
+  //Jon said put the functions content to the render but where?
 
   // selectHandler = (e) => {
   //   console.log(e.target.value);
@@ -72,10 +77,20 @@ class App extends Component {
       return <p>Loading...</p>;
     }
 
+
+    let quotes = [...this.state.quotes];
+    quotes = quotes.filter((quote) => {
+      return quote.character
+        .toLowerCase()
+        .includes(this.state.inputValue.toLowerCase());
+    });
+
+
     return (
       <>
         <TotalLikes
-          totalLikes={this.state.totalLikes}
+          totalLikes={this.getTotalLikes()}
+          // totalLikes={this.state.totalLikes}
         />
         <SearchInput
           inputHandler={this.inputHandler}
@@ -83,7 +98,7 @@ class App extends Component {
         />
         {/* <SelectInput selectHandler={this.selectHandler} /> */}
         <CharacterQuotes
-          data={this.state.quotes}
+          data={quotes}
           onLikeHandler={this.onLikeHandler}
           onDeleteHandler={this.onDeleteHandler}
         />
