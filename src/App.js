@@ -1,111 +1,87 @@
-import React, { Component } from "react";
 import axios from "axios";
 import CharacterQuotes from "./components/CharacterQuotes";
 import "./App.css";
 import TotalLikes from "./components/TotalLikes";
 import SearchInput from "./components/SearchInput";
-import SelectInput from "./components/SelectInput";
+// import SelectInput from "./components/SelectInput";
+import React, { useState, useEffect } from "react";
 
-class App extends Component {
-  state = { inputValue: "" };
+const App = () => {
 
-  componentDidMount() {
-    this.getSimpsons();
-  }
+  const [inputValue, setInputValue] = useState("");
+  const [quotes,setQuotes] = useState([])
 
-  getSimpsons = async () => {
+  useEffect(() => getSimpsons, []);
+
+  const getSimpsons = async () => {
     const { data } = await axios.get(
       `https://thesimpsonsquoteapi.glitch.me/quotes?count=50`
     );
     data.forEach((data, index) => {
       data.id = index + 1;
     });
-    this.setState({ quotes: data });
+    setQuotes(data);
   };
 
-  onLikeHandler = (id) => {
-    let quotes = [...this.state.quotes];
-    const likedIndex = quotes.findIndex((quote) => {
+  const onLikeHandler = (id) => {
+    let _quotes = [...quotes];
+    const likedIndex = _quotes.findIndex((quote) => {
       return id === quote.id;
     });
-    quotes[likedIndex].liked = !quotes[likedIndex].liked;
-    this.setState({ quotes: quotes });
-    // this.getTotalLikes(); //satte is not yet updated
+    _quotes[likedIndex].liked = !_quotes[likedIndex].liked;
+    setQuotes(_quotes);
   };
 
-  onDeleteHandler = (id) => {
-    let quotes = [...this.state.quotes];
-    const index = quotes.findIndex((quote) => {
+  const onDeleteHandler = (id) => {
+    let _quotes = [...quotes];
+    const index = _quotes.findIndex((quote) => {
       return quote.id === id;
-    });
-    quotes.splice(index,1);
-    this.setState({ quotes: quotes });
+    });   
+
+    _quotes.splice(index, 1);
+    setQuotes(_quotes);
   };
 
-  getTotalLikes = () => {
-    const filteredList = this.state.quotes.filter((quote) => {
+  const getTotalLikes = () => {
+    const filteredList = quotes.filter((quote) => {
       return quote.liked;
     });
-    return filteredList.length
-    // this.setState({ totalLikes: filteredList.length });
-  }; 
-  
-  //Not working because I'm creating a second piece of state here?
-  //chnage to return filteredList.length instead of setting state and then call func in render
-
-  inputHandler = (e) => {
-    this.setState({ inputValue: e.target.value });
-    // let quotes = [...this.state.quotes];
-    // quotes = quotes.filter((quote) => {
-    //   return quote.character
-    //     .toLowerCase()
-    //     .includes(this.state.inputValue.toLowerCase());
-    // });
-    // this.setState({ quotes: quotes });
+    return filteredList.length;
   };
-  //Not working because creating unecessary state?
-  //Change to pass the results of this func to the render?
-  //But how would I send a variable which exists in a function? 
-  //Jon said put the functions content to the render but where?
 
-  // selectHandler = (e) => {
+
+  const inputHandler = (e) => {
+    setInputValue(e.target.value);
+  };
+
+  // const selectHandler = (e) => {
   //   console.log(e.target.value);
   // };
 
-  render() {
-    if (!this.state.quotes) {
-      return <p>Loading...</p>;
-    }
-
-
-    let quotes = [...this.state.quotes];
-    quotes = quotes.filter((quote) => {
-      return quote.character
-        .toLowerCase()
-        .includes(this.state.inputValue.toLowerCase());
-    });
-
-
-    return (
-      <>
-        <TotalLikes
-          totalLikes={this.getTotalLikes()}
-          // totalLikes={this.state.totalLikes}
-        />
-        <SearchInput
-          inputHandler={this.inputHandler}
-          inputValue={this.state.inputValue}
-        />
-        {/* <SelectInput selectHandler={this.selectHandler} /> */}
-        <CharacterQuotes
-          data={quotes}
-          onLikeHandler={this.onLikeHandler}
-          onDeleteHandler={this.onDeleteHandler}
-        />
-      </>
-    );
+console.log(quotes)
+  if (!quotes) {
+    return <p>Loading...</p>;
   }
-}
+
+  let _quotes = [...quotes];
+  _quotes = _quotes.filter((quote) => {
+    return quote.character.toLowerCase().includes(inputValue.toLowerCase());
+  });
+
+  return (
+    <>
+      <TotalLikes
+        totalLikes={getTotalLikes()}
+      />
+      <SearchInput inputHandler={inputHandler} inputValue={inputValue} />
+      {/* <SelectInput selectHandler={this.selectHandler} /> */}
+      <CharacterQuotes
+        data={_quotes}
+        onLikeHandler={onLikeHandler}
+        onDeleteHandler={onDeleteHandler}
+      />
+    </>
+  );
+};
 
 export default App;
-
