@@ -4,16 +4,19 @@ import "./App.css";
 import TotalLikes from "./components/TotalLikes";
 import SearchInput from "./components/SearchInput";
 // import SelectInput from "./components/SelectInput";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 
 const App = () => {
+  console.log("app is running")
 
   const [inputValue, setInputValue] = useState("");
   const [quotes,setQuotes] = useState([])
 
   useEffect(() => getSimpsons, []);
 
-  const getSimpsons = async () => {
+  const getSimpsons = async () => { 
+    console.log("get simpsons is is running")
+
     const { data } = await axios.get(
       `https://thesimpsonsquoteapi.glitch.me/quotes?count=50`
     );
@@ -23,16 +26,20 @@ const App = () => {
     setQuotes(data);
   };
 
-  const onLikeHandler = (id) => {
+  const onLikeHandler = useCallback((id) => {
+    console.log("like handler is is running")
+
     let _quotes = [...quotes];
     const likedIndex = _quotes.findIndex((quote) => {
       return id === quote.id;
     });
     _quotes[likedIndex].liked = !_quotes[likedIndex].liked;
     setQuotes(_quotes);
-  };
+  },[quotes]
+)
+  const onDeleteHandler = useCallback((id) => {
+    console.log("delete handler is running")
 
-  const onDeleteHandler = (id) => {
     let _quotes = [...quotes];
     const index = _quotes.findIndex((quote) => {
       return quote.id === id;
@@ -40,17 +47,19 @@ const App = () => {
 
     _quotes.splice(index, 1);
     setQuotes(_quotes);
-  };
+  },[quotes])
 
-  const getTotalLikes = () => {
+  const getTotalLikes = useCallback(() => {
+    console.log("get total likes is is running")
     const filteredList = quotes.filter((quote) => {
       return quote.liked;
     });
     return filteredList.length;
-  };
+  },[quotes])
 
 
   const inputHandler = (e) => {
+    console.log("input handler is running");
     setInputValue(e.target.value);
   };
 
@@ -58,7 +67,6 @@ const App = () => {
   //   console.log(e.target.value);
   // };
 
-console.log(quotes)
   if (!quotes) {
     return <p>Loading...</p>;
   }
