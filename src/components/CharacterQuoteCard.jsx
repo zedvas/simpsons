@@ -5,10 +5,9 @@ import Quote from "./Quote";
 import DeleteButton from "./DeleteButton";
 
 function CharacterQuoteCard({
-  data: { character, characterDirection, image, quote, id, liked },
-  onLikeHandler,
-  onDeleteHandler,
-}) {
+  data: { character, characterDirection, image, quote, id, liked }
+}) {  
+
   return (
     <div className={liked ? "liked quoteItem" : "quoteItem"}>
       <CharacterName characterName={character} />
@@ -16,8 +15,8 @@ function CharacterQuoteCard({
         <Image image={image} characterName={character} />
         <Quote quote={quote} />
       </div>
-      <LikeButton id={id} liked={liked} onLikeHandler={onLikeHandler} />
-      <DeleteButton id={id} onDeleteHandler={onDeleteHandler} />
+      <LikeButton id={id} liked={liked}/>
+      <DeleteButton id={id} />
     </div>
   );
 }

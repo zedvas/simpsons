@@ -1,6 +1,11 @@
-function LikeButton({ liked, id, onLikeHandler }) {
+import { useDispatch } from "react-redux";
+import { TOGGLE_LIKE } from "../redux/types";
+
+function LikeButton({ liked, id }) {
+
+  const dispatch = useDispatch()
   return (
-    <button onClick={() => onLikeHandler(id)}>
+    <button onClick={() => dispatch({type: TOGGLE_LIKE, id: id})}>
       {liked ? "dislike" : "like"}
     </button>
   );
