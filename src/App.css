@@ -1,12 +1,16 @@
+body,
+.controls {
+  background-color: yellow;
+}
+
 .quoteItem {
   background-color: lightblue;
   margin: 20px;
-  display:flex;
+  display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   padding: 2rem;
-
 }
 
 .main {
@@ -16,20 +20,20 @@
 }
 button {
   font-size: 2rem;
-  border:3px solid yellow;
+  border: 3px solid yellow;
   background-color: transparent;
   border-radius: 30px;
   padding: 1em;
 }
 
 button:hover {
-background-color: yellow;
+  background-color: yellow;
 }
 .liked {
   background-color: yellow;
 }
 .liked button {
-  border: 3px solid lightblue
+  border: 3px solid lightblue;
 }
 .liked button:hover {
   background-color: lightblue;
@@ -41,4 +45,13 @@ background-color: yellow;
 
 img {
   height: 150px;
+}
+
+.controls {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: sticky;
+  top: 0;
 }

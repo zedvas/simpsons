@@ -8,12 +8,13 @@ import React, { useState, useEffect, useCallback } from "react";
 
 const App = () => {
   const [inputValue, setInputValue] = useState("");
-  const [quotes,setQuotes] = useState([])
+  const [quotes, setQuotes] = useState([]);
 
-  useEffect(() => getSimpsons(), []);
+  useEffect(() => {
+    getSimpsons();
+  }, []);
 
-  const getSimpsons = async () => { 
-
+  const getSimpsons = async () => {
     const { data } = await axios.get(
       `https://thesimpsonsquoteapi.glitch.me/quotes?count=50`
     );
@@ -23,34 +24,36 @@ const App = () => {
     setQuotes(data);
   };
 
-  const onLikeHandler = useCallback((id) => {
+  const onLikeHandler = useCallback(
+    (id) => {
+      let _quotes = [...quotes];
+      const likedIndex = _quotes.findIndex((quote) => {
+        return id === quote.id;
+      });
+      _quotes[likedIndex].liked = !_quotes[likedIndex].liked;
+      setQuotes(_quotes);
+    },
+    [quotes]
+  );
+  const onDeleteHandler = useCallback(
+    (id) => {
+      let _quotes = [...quotes];
+      const index = _quotes.findIndex((quote) => {
+        return quote.id === id;
+      });
 
-    let _quotes = [...quotes];
-    const likedIndex = _quotes.findIndex((quote) => {
-      return id === quote.id;
-    });
-    _quotes[likedIndex].liked = !_quotes[likedIndex].liked;
-    setQuotes(_quotes);
-  },[quotes]
-)
-  const onDeleteHandler = useCallback((id) => {
-
-    let _quotes = [...quotes];
-    const index = _quotes.findIndex((quote) => {
-      return quote.id === id;
-    });   
-
-    _quotes.splice(index, 1);
-    setQuotes(_quotes);
-  },[quotes])
+      _quotes.splice(index, 1);
+      setQuotes(_quotes);
+    },
+    [quotes]
+  );
 
   const getTotalLikes = useCallback(() => {
     const filteredList = quotes.filter((quote) => {
       return quote.liked;
     });
     return filteredList.length;
-  },[quotes])
-
+  }, [quotes]);
 
   const inputHandler = (e) => {
     setInputValue(e.target.value);
@@ -71,11 +74,11 @@ const App = () => {
 
   return (
     <>
-      <TotalLikes
-        totalLikes={getTotalLikes()}
-      />
-      <SearchInput inputHandler={inputHandler} inputValue={inputValue} />
-      {/* <SelectInput selectHandler={this.selectHandler} /> */}
+      <div className="controls">
+        <TotalLikes totalLikes={getTotalLikes()} />
+        <SearchInput inputHandler={inputHandler} inputValue={inputValue} />
+        {/* <SelectInput selectHandler={this.selectHandler} /> */}
+      </div>
       <CharacterQuotes
         data={_quotes}
         onLikeHandler={onLikeHandler}
