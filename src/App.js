@@ -7,15 +7,12 @@ import SearchInput from "./components/SearchInput";
 import React, { useState, useEffect, useCallback } from "react";
 
 const App = () => {
-  console.log("app is running")
-
   const [inputValue, setInputValue] = useState("");
   const [quotes,setQuotes] = useState([])
 
-  useEffect(() => getSimpsons, []);
+  useEffect(() => getSimpsons(), []);
 
   const getSimpsons = async () => { 
-    console.log("get simpsons is is running")
 
     const { data } = await axios.get(
       `https://thesimpsonsquoteapi.glitch.me/quotes?count=50`
@@ -27,7 +24,6 @@ const App = () => {
   };
 
   const onLikeHandler = useCallback((id) => {
-    console.log("like handler is is running")
 
     let _quotes = [...quotes];
     const likedIndex = _quotes.findIndex((quote) => {
@@ -38,7 +34,6 @@ const App = () => {
   },[quotes]
 )
   const onDeleteHandler = useCallback((id) => {
-    console.log("delete handler is running")
 
     let _quotes = [...quotes];
     const index = _quotes.findIndex((quote) => {
@@ -50,7 +45,6 @@ const App = () => {
   },[quotes])
 
   const getTotalLikes = useCallback(() => {
-    console.log("get total likes is is running")
     const filteredList = quotes.filter((quote) => {
       return quote.liked;
     });
@@ -59,7 +53,6 @@ const App = () => {
 
 
   const inputHandler = (e) => {
-    console.log("input handler is running");
     setInputValue(e.target.value);
   };
 
