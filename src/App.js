@@ -79,11 +79,15 @@ const App = () => {
         <SearchInput inputHandler={inputHandler} inputValue={inputValue} />
         {/* <SelectInput selectHandler={this.selectHandler} /> */}
       </div>
-      <CharacterQuotes
-        data={_quotes}
-        onLikeHandler={onLikeHandler}
-        onDeleteHandler={onDeleteHandler}
-      />
+      {_quotes.length ? (
+        <CharacterQuotes
+          data={_quotes}
+          onLikeHandler={onLikeHandler}
+          onDeleteHandler={onDeleteHandler}
+        />
+      ) : (
+        <p className="loading">Loading...</p>
+      )}
     </>
   );
 };
