@@ -16,8 +16,9 @@ function CharacterQuoteCard({
         <Image image={image} characterName={character} />
         <Quote quote={quote} />
       </div>
+      <div className="buttonContainer">
       <LikeButton id={id} liked={liked} onLikeHandler={onLikeHandler} />
-      <DeleteButton id={id} onDeleteHandler={onDeleteHandler} />
+      <DeleteButton id={id} onDeleteHandler={onDeleteHandler} /></div>
     </div>
   );
 }
