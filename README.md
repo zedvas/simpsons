@@ -14,6 +14,9 @@ React, Axios
 - Like quotes
 - Delete quotes
 
+## Demo
+
+https://simpsons-quotes-zv.netlify.app/
 
 ## Acknowledgements
 
